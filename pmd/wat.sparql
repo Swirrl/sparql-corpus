@@ -1,0 +1,20 @@
+PREFIX qb: <http://purl.org/linked-data/cube#>
+          PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+          SELECT ?row (?firstrowlabel as ?rowlabel) ?column (?o2 as ?obs) (?val2 as ?val)
+          WHERE {
+
+
+          VALUES (?row ?firstrowlabel) {
+            (<http://reference.data.gov.uk/id/year/2011> '') (<http://reference.data.gov.uk/id/year/2012> '' )
+          }
+
+
+          GRAPH <http://data.hampshirehub.net/graph/employment/jobs-density> {
+            ?o2 <http://opendatacommunities.org/def/ontology/time/refPeriod> ?row .
+            ?o2 <http://opendatacommunities.org/def/ontology/geography/refArea> ?column .
+            ?o2 <http://data.hampshirehub.net/def/measure-properties/ratio> ?val2 .
+
+              ?o2 <http://data.hampshirehub.net/def//dimensions/geographicLevel> <http://statistics.data.gov.uk/id/statistical-entity/E01> .
+            }
+          }

@@ -1,0 +1,25 @@
+SELECT DISTINCT ?org ?org2 ?activityType {
+  ?mem a <http://data.digitalsocial.eu/def/ontology/ActivityMembership> .
+  ?mem2 a <http://data.digitalsocial.eu/def/ontology/ActivityMembership> .
+
+  ?mem <http://data.digitalsocial.eu/def/ontology/activity> ?proj .
+  ?mem <http://data.digitalsocial.eu/def/ontology/organization> ?org .
+
+  ?mem2 <http://data.digitalsocial.eu/def/ontology/activity> ?proj .
+  ?mem2 <http://data.digitalsocial.eu/def/ontology/organization> ?org2 .
+
+  OPTIONAL {
+    ?proj <http://data.digitalsocial.eu/def/ontology/activityType> ?tooNarrow .
+    ?tooNarrow <http://www.w3.org/2004/02/skos/core#broader> ?activityType .
+  }
+
+  OPTIONAL {
+    ?proj <http://data.digitalsocial.eu/def/ontology/activityType> ?activityType .
+    FILTER NOT EXISTS { ?activityType <http://www.w3.org/2004/02/skos/core#broader> ?broader . }
+  }
+
+  ?org2 <http://www.w3.org/ns/org#hasPrimarySite> ?site2 .
+  ?org <http://www.w3.org/ns/org#hasPrimarySite> ?site .
+
+  FILTER(?org != ?org2)
+}

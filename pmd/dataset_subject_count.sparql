@@ -1,0 +1,3 @@
+SELECT (COUNT(*) as ?tripod_count_var) {
+  SELECT DISTINCT ?uri (<http://data.hampshirehub.net/graph/employment/jobs-density> as ?graph) WHERE { GRAPH <http://data.hampshirehub.net/graph/employment/jobs-density> { ?uri ?p ?o } }  LIMIT 10000
+}

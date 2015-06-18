@@ -1,0 +1,6 @@
+SELECT DISTINCT ?uri WHERE {
+         GRAPH <http://data.hampshirehub.net/graph/employment/jobs-density/metadata> {
+          <http://data.hampshirehub.net/data/employment/jobs-density> <http://rdfs.org/ns/void#vocabulary> ?uri .
+        }
+        ?uri a <http://www.w3.org/2002/07/owl#Ontology> .
+      }

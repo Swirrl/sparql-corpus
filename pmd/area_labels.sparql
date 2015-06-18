@@ -1,0 +1,14 @@
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#Concept>
+
+SELECT * {
+  SELECT DISTINCT ?uri ?label WHERE {
+
+            GRAPH <http://data.hampshirehub.net/graph/employment/jobs-density> {
+              ?obs qb:dataSet <http://data.hampshirehub.net/data/employment/jobs-density> .
+              ?obs <http://opendatacommunities.org/def/ontology/geography/refArea> ?uri .
+            }
+          OPTIONAL { ?uri rdfs:label ?label . }  }  ORDER BY ?uri
+}
+LIMIT 5000 OFFSET 0

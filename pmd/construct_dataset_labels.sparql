@@ -1,0 +1,13 @@
+CONSTRUCT {
+  ?o <http://www.w3.org/2004/02/skos/core#prefLabel> ?var0 .
+  ?o <http://www.w3.org/2000/01/rdf-schema#label> ?var1 .
+  ?o <http://purl.org/dc/terms/title> ?var2 .
+  ?o <http://purl.org/dc/elements/1.1/title> ?var3 .
+}
+WHERE {
+  <http://data.hampshirehub.net/data/employment/jobs-density> ?p ?o .
+  OPTIONAL { ?o <http://www.w3.org/2004/02/skos/core#prefLabel> ?var0 .  }
+  OPTIONAL { ?o <http://www.w3.org/2000/01/rdf-schema#label> ?var1 .  }
+  OPTIONAL { ?o <http://purl.org/dc/terms/title> ?var2 .  }
+  OPTIONAL { ?o <http://purl.org/dc/elements/1.1/title> ?var3 .  }
+}

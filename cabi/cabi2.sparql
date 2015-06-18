@@ -1,0 +1,26 @@
+  PREFIX dcterms: <http://purl.org/dc/terms/>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+  
+  CONSTRUCT {
+    <http://linked-development.org/eldis/themes/C782/> 
+      rdfs:label ?label ; 
+      dcterms:identifier  ?id ;
+      skos:narrower ?child_concept .
+  
+    ?child_concept ?child_predicate ?child_object .
+  } WHERE {
+    GRAPH <http://linked-development.org/graph/eldis> {
+      
+      <http://linked-development.org/eldis/themes/C782/> 
+        a skos:Concept ;
+        skos:inScheme <http://linked-development.org/eldis/themes/C2/> ;
+        rdfs:label ?label ;
+        dcterms:identifier ?id ;
+        skos:narrower ?child_concept .
+    
+      ?child_concept ?child_predicate ?child_object ;
+        FILTER NOT EXISTS { ?child_concept skos:narrower ?something }
+  
+    } 
+  }

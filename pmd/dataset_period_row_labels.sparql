@@ -1,0 +1,21 @@
+PREFIX qb: <http://purl.org/linked-data/cube#>
+          PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        SELECT (?row as ?uri) (MIN(?rowlabel) as ?label) WHERE {
+        {
+          SELECT DISTINCT ?row
+          WHERE {
+            GRAPH <http://data.hampshirehub.net/graph/employment/jobs-density> {
+              ?o <http://opendatacommunities.org/def/ontology/time/refPeriod> ?row .
+                ?o <http://data.hampshirehub.net/def//dimensions/geographicLevel> <http://statistics.data.gov.uk/id/statistical-entity/E01> .  }
+              }
+            }
+              OPTIONAL {
+                ?row rdfs:label ?rowlabel .
+              }
+            }
+
+            # group by rows so we can get the first label
+            GROUP BY ?row
+
+            ORDER BY ASC(?firstrowlabel)
+            LIMIT 25 OFFSET 0

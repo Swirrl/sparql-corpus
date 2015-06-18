@@ -1,0 +1,17 @@
+SELECT (COUNT(*) as ?tripod_count_var) {
+  SELECT ?uri ?graph where {
+          # this bit is all the non-deprecated ones
+          {
+            SELECT * WHERE {
+              GRAPH ?graph {
+                ?uri a <http://publishmydata.com/def/dataset#Dataset> .
+                ?uri <http://purl.org/dc/terms/title> ?title . # select title so we can order
+              }
+              MINUS {
+                ?uri a <http://publishmydata.com/def/dataset#DeprecatedDataset>
+              }
+            }
+            ORDER BY ?title
+          }
+        }
+}

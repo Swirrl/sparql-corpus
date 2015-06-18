@@ -1,0 +1,48 @@
+ PREFIX owl: <http://www.w3.org/2002/07/owl#>
+ PREFIX dcterms: <http://purl.org/dc/terms/>
+ PREFIX bibo: <http://purl.org/ontology/bibo/>
+ PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+ PREFIX fao: <http://www.fao.org/countryprofiles/geoinfo/geopolitical/resource/>
+ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+ PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+
+
+ CONSTRUCT {
+   ?resource a fao:territory ;
+              rdfs:label ?countrylabel ;
+              dcterms:identifier ?objectId ;
+              fao:codeISO2 ?countryCode ;
+              <http://linked-development.org/o/graphName> ?graph .
+
+ } WHERE {
+   
+   SELECT DISTINCT ?resource ?countrylabel ?objectId ?countryCode ?graph {
+
+     { GRAPH <http://linked-development.org/graph/eldis> {
+       VALUES ?graph { "eldis" }
+       ?article a bibo:Article ;
+                dcterms:coverage ?resource .
+
+       ?resource fao:codeISO2 ?countryCode ;
+                 rdfs:label ?countrylabel ;
+                 dcterms:identifier ?objectId .
+     }
+     } UNION { 
+       GRAPH <http://linked-development.org/graph/r4d> {
+         VALUES ?graph { "r4d" }
+
+         ?article a bibo:Article ;
+                  dcterms:coverage ?resource .
+         
+         ?resource fao:nameList ?countrylabel .
+         FILTER(lang(?countrylabel) = 'en')
+
+         ?resource fao:codeISO2 ?countryCode .
+         
+         BIND(replace(str(?resource), "http://www.fao.org/countryprofiles/geoinfo/geopolitical/resource/", '') AS ?objectId) .
+       }
+     } 
+   } LIMIT 500 
+ }
+ 

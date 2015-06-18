@@ -1,0 +1,13 @@
+DESCRIBE ?uri WHERE {
+  SELECT DISTINCT ?uri WHERE {
+    GRAPH <http://linked-development.org/graph/r4d> {
+      ?s ?p ?o
+    }
+    {
+      ?p <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> ?uri
+    } UNION {
+      ?o <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> ?uri
+    }  ?uri a <http://www.w3.org/2002/07/owl#Ontology>.
+
+  }
+}

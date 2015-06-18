@@ -1,0 +1,1 @@
+SELECT ?g WHERE { GRAPH ?g {<http://purl.org/linked-data/cube#Observation> ?p ?o } } LIMIT 1

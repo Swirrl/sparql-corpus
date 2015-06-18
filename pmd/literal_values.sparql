@@ -1,0 +1,6 @@
+SELECT * WHERE {
+     GRAPH ?g {
+       ?s ?p ?o
+     }
+     VALUES ?g { <http://frogs.com/live-graph> }
+   }

@@ -1,0 +1,52 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+PREFIX os: <http://data.ordnancesurvey.co.uk/ontology/postcode/>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX asset: <http://linked.glasgow.gov.uk/def/urban-assets/>
+
+SELECT ?type ?uri ?name ?lat ?long
+       (CONCAT(?streetaddr, " ", ?postalcode) AS ?fulladdress) WHERE {
+
+  # Find facilities that are definitely within this ward, or possibly
+  # in this ward but not those that are explicitly in other wards!
+  VALUES ?ward { <http://statistics.data.gov.uk/id/statistical-geography/S13002641> }
+
+  GRAPH <http://linked.glasgow.gov.uk/graph/vocab/glasgow-life-facilities/ontology> {
+    ?type rdfs:subClassOf asset:LeisureFacility .
+  }
+
+  GRAPH <http://linked.glasgow.gov.uk/graph/glasgow-life-facilities> {
+      ?uri a ?type ;
+           rdfs:label ?name .
+
+    {
+      FILTER NOT EXISTS {
+        # If anyOtherWard does not exist for this URI
+        # keep it.
+        ?uri vcard:hasAddress ?address .
+        ?address os:postcode ?postcode .
+
+        GRAPH <http://linked.glasgow.gov.uk/graph/postcodes> {
+          ?postcode os:ward ?anyOtherWard .
+        }
+      }
+    } UNION {
+      OPTIONAL {
+        ?uri vcard:hasAddress ?address .
+        OPTIONAL {
+          ?address os:postcode ?postcode ;
+                   vcard:street-address ?streetaddr ;
+                   vcard:postal-code ?postalcode .
+          OPTIONAL {
+            GRAPH <http://linked.glasgow.gov.uk/graph/postcodes> {
+              ?postcode geo:lat ?lat ;
+                        geo:long ?long .
+              OPTIONAL { ?postcode os:ward ?ward . }
+            }
+          }
+        }
+      }
+    }
+  }
+}

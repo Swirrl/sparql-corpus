@@ -1,0 +1,71 @@
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX bibo: <http://purl.org/ontology/bibo/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX fao: <http://www.fao.org/countryprofiles/geoinfo/geopolitical/resource/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+
+
+CONSTRUCT {
+  ?resource
+    rdfs:label ?label ; 
+    dcterms:identifier ?parent_id ;
+    skos:narrower ?child_concept .
+  
+  ?child_concept 
+    dcterms:identifier ?child_id ;
+    rdfs:label ?child_label ; 
+    ?child_predicate ?child_object .
+} 
+WHERE {
+  {
+    SELECT ?resource ?label ?parent_id WHERE {
+      {
+        GRAPH <http://linked-development.org/graph/eldis> {
+          SELECT ?resource ?label ?parent_id WHERE {
+            #VALUES ?resource { <http://linked-development.org/eldis/themes/C782/> }
+
+            ?resource 
+               a skos:Concept ;
+               skos:inScheme <http://linked-development.org/eldis/themes/C2/> ;
+               rdfs:label ?label ;
+               dcterms:identifier ?parent_id .
+          }
+        }
+      }
+      UNION 
+      {
+        GRAPH <http://linked-development.org/graph/r4d> {
+          SELECT ?resource ?label ?parent_id WHERE {
+            ?resource a skos:Concept .
+            BIND(replace(str(?resource), "(http://aims.fao.org/aos/agrovoc/|http://dbpedia.org/resource/)", '') AS ?parent_id)
+            
+            OPTIONAL { ?resource skos:prefLabel ?label . }
+            OPTIONAL { ?resource skos:preLabel ?label . }
+          }
+        }
+      } 
+    } LIMIT 10 OFFSET 0
+  }
+
+  OPTIONAL {
+    GRAPH <http://linked-development.org/graph/eldis> {
+      ?resource skos:narrower ?child_concept .
+      
+      ?child_concept 
+      dcterms:identifier ?child_id ;
+      ?child_predicate ?child_object .
+    }
+  }
+  
+  OPTIONAL {
+    GRAPH <http://linked-development.org/graph/r4d> {
+      ?resource skos:narrower ?child_concept .
+      
+      OPTIONAL { ?child_concept skos:prefLabel ?child_label . }
+      OPTIONAL { ?child_concept skos:preLabel ?child_label . }
+      BIND(replace(str(?child_concept), "http://aims.fao.org/aos/agrovoc/", '') AS ?child_id) .
+    }
+  }
+}

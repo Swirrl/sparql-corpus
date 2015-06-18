@@ -1,0 +1,9 @@
+PREFIX pf: <http://prefix/>
+
+SELECT ?s
+FROM pf:g1
+FROM NAMED <http://named1>
+FROM NAMED <http://named2>
+{
+    { ?s ?p ?o } UNION { GRAPH ?g { ?s ?p ?o } }
+}

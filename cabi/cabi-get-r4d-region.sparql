@@ -1,0 +1,29 @@
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX bibo: <http://purl.org/ontology/bibo/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX fao: <http://www.fao.org/countryprofiles/geoinfo/geopolitical/resource/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+
+
+CONSTRUCT {
+  ?resource rdfs:label ?regionLabel ;
+   dcterms:identifier ?objectId ;
+   <http://linked-development.org/o/graphName> ?graph .
+}
+
+{
+  SELECT DISTINCT ?resource ?graph ?regionLabel ?objectId WHERE {
+    GRAPH <http://linked-development.org/graph/r4d> {
+      VALUES ?graph { "r4d" }
+      VALUES ?objectId { "057" }
+      ?resource a fao:geographical_region ;
+      fao:codeUN ?objectId ;
+      fao:nameList ?regionLabel .
+
+      FILTER(lang(?regionLabel) = 'en')
+    }
+  }  LIMIT 1  OFFSET 0
+}

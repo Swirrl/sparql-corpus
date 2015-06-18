@@ -1,0 +1,6 @@
+CONSTRUCT { ?uri ?p ?o . } WHERE {
+  GRAPH ?g {
+    ?uri ?p ?o .
+    VALUES (?uri ?g) { (<http://data.hampshirehub.net/data/employment/jobs-density/year/2012/E01023015/jobs/ratio> UNDEF) (<http://data.hampshirehub.net/data/employment/jobs-density/year/2012/E01022467/jobs/ratio> UNDEF) (<http://data.hampshirehub.net/data/employment/jobs-density/year/2011/E01023013/jobs/ratio> UNDEF) (<http://data.hampshirehub.net/data/employment/jobs-density/year/2011/E01017013/jobs/ratio> UNDEF) (<http://data.hampshirehub.net/data/employment/jobs-density/year/2012/E01017289/jobs/ratio> UNDEF) }
+  }
+}

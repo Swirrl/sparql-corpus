@@ -1,0 +1,7 @@
+SELECT (?slice as ?uri) ?graph WHERE {
+            <http://data.hampshirehub.net/data/employment/jobs-density> <http://purl.org/linked-data/cube#slice> ?slice .
+            GRAPH ?graph {
+              ?slice a <http://purl.org/linked-data/cube#Slice> .
+            }
+          }
+          LIMIT 1

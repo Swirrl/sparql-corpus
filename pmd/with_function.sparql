@@ -1,0 +1,7 @@
+SELECT  *
+WHERE
+  { BIND(uri("http://frogs.com/live-graph") AS ?g)
+    GRAPH ?g
+      { ?s ?p ?o}
+  }
+LIMIT   10

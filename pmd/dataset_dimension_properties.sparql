@@ -1,0 +1,17 @@
+SELECT ?uri ?graph
+            WHERE {
+              {
+                SELECT DISTINCT ?uri
+                WHERE {
+                  {
+                    GRAPH ?graph {
+                      ?uri a <http://purl.org/linked-data/cube#DimensionProperty> .
+                    }
+                    GRAPH <http://data.hampshirehub.net/graph/employment/jobs-density> {
+                      ?s ?uri ?o .
+                    }
+                  }
+                }
+              }
+              FILTER (?uri != <http://purl.org/linked-data/cube#measureType>)
+            }

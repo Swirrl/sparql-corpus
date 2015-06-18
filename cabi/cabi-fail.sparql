@@ -1,0 +1,1 @@
+DESCRIBE ?uri WHERE { SELECT * {   SELECT DISTINCT ?uri WHERE { GRAPH <http://linked-development.org/graph/r4d> { ?uri ?p ?o . ?uri a <http://purl.org/ontology/bibo/Article> } } } LIMIT 100 OFFSET 0 }

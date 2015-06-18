@@ -1,0 +1,5 @@
+SELECT (COUNT(?s) AS ?count) WHERE {
+  GRAPH <http://linked-development.org/eldis/> {
+    ?s ?p ?o ;
+  }
+} LIMIT 10

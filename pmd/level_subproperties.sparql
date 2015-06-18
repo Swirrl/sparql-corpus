@@ -1,0 +1,14 @@
+SELECT (COUNT(*) as ?tripod_count_var) {
+  SELECT *
+          WHERE {
+            {
+              <http://data.hampshirehub.net/def//dimensions/geographicLevel> ?p ?o .
+              FILTER ( <http://data.hampshirehub.net/def//dimensions/geographicLevel> = <http://purl.org/linked-data/sdmx/2009/dimension#refArea> )
+            }
+            UNION
+            {
+              ?uri <http://www.w3.org/2000/01/rdf-schema#subPropertyOf>+ <http://purl.org/linked-data/sdmx/2009/dimension#refArea> .
+              VALUES ?uri {<http://data.hampshirehub.net/def//dimensions/geographicLevel>}
+            }
+          }
+}

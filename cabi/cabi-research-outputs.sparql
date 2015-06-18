@@ -1,0 +1,58 @@
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX bibo: <http://purl.org/ontology/bibo/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX fao: <http://www.fao.org/countryprofiles/geoinfo/geopolitical/resource/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+PREFIX linkeddev: <http://linked-development.org/dev/#>
+PREFIX dbpo: <http://dbpedia.org/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT {
+  ?resource dcterms:title ?title ;
+            a dbpo:ResearchProject ;
+            dcterms:identifier ?projectId ;
+            linkeddev:numberOfOutputs ?numberOfOutputs .
+  
+  ?output2 dcterms:title ?outputTitle ;
+           bibo:uri ?outputLink ;
+           dcterms:date ?outputDate ;
+           dcterms:isPartOf ?resource2 .
+}
+
+{
+  {  
+    SELECT DISTINCT ?resource ?title ?projectUri ?outputTitle ?outputDate (COUNT(?output) AS ?numberOfOutputs) WHERE {
+      ?resource a dbpo:ResearchProject ;
+                a <http://www.iatistandard.org/ontology#iati-activity> ;
+                dcterms:title ?title ;
+                dcterms:identifier "GB-1-203193" .
+
+      ?output dcterms:isPartOf ?resource .
+
+    } GROUP BY ?resource ?title ?projectUri ?outputTitle ?outputDate
+  }
+  
+  {
+    SELECT ?output2 ?resource2 ?outputTitle ?outputDate ?outputLink WHERE {
+      
+      ?resource2 a dbpo:ResearchProject ;
+                 a <http://www.iatistandard.org/ontology#iati-activity> ;
+                 dcterms:title ?title ;
+                 dcterms:identifier "GB-1-203193" ;
+                 dcterms:identifier ?projectId .
+      
+      ?output2  dcterms:isPartOf ?resource2 ;
+                dcterms:title ?outputTitle ;
+                dcterms:date  ?outputDate .
+      
+      
+      FILTER(regex(str(?projectId), "^[0-9]+", "i"))
+      
+      BIND(replace(str(?output2), "http://linked-development.org/r4d/output/", '') AS ?outputUriId)
+      BIND(replace(str(?outputUriId), "/", '') AS ?outputId)
+      BIND(CONCAT("http://r4d.dfid.gov.uk/output/", ?outputId, "/") AS ?outputLink)
+    }
+  }
+}

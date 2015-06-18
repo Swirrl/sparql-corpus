@@ -1,0 +1,8 @@
+SELECT DISTINCT ?uri
+
+        WHERE {
+          GRAPH <http://data.hampshirehub.net/graph/concept-scheme/folders> {
+            ?folder <http://publishmydata.com/def/ontology/folder/inTree> ?uri .
+            ?folder ?fp ?fo .
+          }
+        }

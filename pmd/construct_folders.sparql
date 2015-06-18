@@ -1,0 +1,6 @@
+CONSTRUCT { ?uri ?p ?o . } WHERE {
+  GRAPH ?g {
+    ?uri ?p ?o .
+    VALUES (?uri ?g) { (<http://data.hampshirehub.net/def/concept/folders/jsna> UNDEF) (<http://data.hampshirehub.net/def/concept/folders/organisations> UNDEF) (<http://data.hampshirehub.net/def/concept/folders/themes> UNDEF) }
+  }
+}
