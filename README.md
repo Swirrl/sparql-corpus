@@ -12,8 +12,6 @@ round-tripping.
 
 # LICENSE
 
-(c) Swirrl IT Ltd 2015.  Licensed under the MIT license
-
 ````
 Copyright (c) 2015 Swirrl IT Ltd.
 
