@@ -1,0 +1,32 @@
+PREFIX cube: <http://purl.org/linked-data/cube#>
+PREFIX simd: <http://data.opendatascotland.org/def/simd/>
+PREFIX sdim: <http://data.opendatascotland.org/def/statistical-dimensions/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX admingeo: <http://data.ordnancesurvey.co.uk/ontology/admingeo/>
+PREFIX geo: <http://data.opendatascotland.org/def/geography/>
+
+SELECT ?rank ?dataZone ?dataZoneLabel ?areaLabel WHERE {
+  GRAPH <http://data.opendatascotland.org/graph/geography/data-zones> {
+    {
+      ?dataZone admingeo:inDistrict <http://statistics.data.gov.uk/id/statistical-geography/S12000041> .
+      ?dataZone admingeo:inDistrict ?district .
+      GRAPH <http://data.opendatascotland.org/graph/geography/council-areas> {
+        ?district rdfs:label ?areaLabel
+      }
+    } UNION {
+      ?dataZone geo:intermediateZone <http://statistics.data.gov.uk/id/statistical-geography/S12000041> .
+      ?dataZone geo:intermediateZone ?interZone .
+      GRAPH <http://data.opendatascotland.org/graph/geography/intermediate-zones> {
+        ?interZone rdfs:label ?areaLabel
+      }
+    }
+    ?dataZone rdfs:label ?dataZoneLabel .
+  }
+  GRAPH <http://data.opendatascotland.org/graph/simd/crime-rank> {
+    ?obs sdim:refArea ?dataZone .
+    ?obs cube:dataSet <http://data.opendatascotland.org/data/simd/crime-rank> .
+    ?obs a cube:Observation .
+    ?obs sdim:refPeriod <http://reference.data.gov.uk/id/year/2012> .
+    ?obs simd:rank ?rank .
+  }
+} ORDER BY(?rank)

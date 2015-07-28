@@ -1,0 +1,22 @@
+SELECT ?uri WHERE {
+  {
+    SELECT (MIN(?rank) as ?matchedRank) WHERE {
+      GRAPH <http://data.opendatascotland.org/graph/geography/data-zones> {
+        {
+          ?dz <http://data.ordnancesurvey.co.uk/ontology/admingeo/inDistrict> <http://statistics.data.gov.uk/id/statistical-geography/S12000033>
+        } UNION {
+          ?dz <http://data.opendatascotland.org/def/geography/intermediateZone> <http://statistics.data.gov.uk/id/statistical-geography/S12000033>
+        }
+        ?dz <http://data.opendatascotland.org/def/simd/rank> ?rank .
+      }
+    }
+  } {
+    GRAPH <http://data.opendatascotland.org/graph/simd/rank> {
+      ?uri <http://data.opendatascotland.org/def/statistical-dimensions/refArea> ?dz ;
+           <http://data.opendatascotland.org/def/simd/rank> ?matchedRank ;
+           <http://data.opendatascotland.org/def/statistical-dimensions/refPeriod> <http://reference.data.gov.uk/id/year/2012> ;
+           a <http://purl.org/linked-data/cube#Observation> .
+
+    }
+  }
+}

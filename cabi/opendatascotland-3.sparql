@@ -1,0 +1,15 @@
+PREFIX cube: <http://purl.org/linked-data/cube#>
+PREFIX simd: <http://data.opendatascotland.org/def/simd/>
+PREFIX sdim: <http://data.opendatascotland.org/def/statistical-dimensions/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX admingeo: <http://data.ordnancesurvey.co.uk/ontology/admingeo/>
+PREFIX geo: <http://data.opendatascotland.org/def/geography/>
+
+SELECT ?uri WHERE {
+  {
+    SELECT (MIN(?rank) as ?minRank) WHERE {
+      ?uri simd:rank ?rank
+    }
+  }
+  { ?uri simd:rank ?minRank }
+}
